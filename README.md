@@ -15,7 +15,8 @@ You read an email, decide an assistant needs to see it, and apply their label. T
 The assistant just opens their label in Gmail — unread threads are at the top. No fuss.
 
 **Supports multiple assistants.** Each assistant gets their own label processed independently.
-> [!note] **Not just for assistants.**
+> [!TIP]
+> **Not just for assistants.**
 > You can use this with any Gmail label. Set it up for a team member, a shared mailbox, a project label — anything where you want newly-labeled threads to auto-surface as unread.
 
 ---

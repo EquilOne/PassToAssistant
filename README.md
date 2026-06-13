@@ -46,7 +46,7 @@ The script can create it automatically, but you can also make it now if you like
 
 ## Setup
 
-Each person who wants to use this must set up their own copy. These steps are one-time only.
+Each person (account) who wants to use this must set up their own copy. These steps are one-time only.
 
 ### Step 1: Open Google Apps Script
 
@@ -57,7 +57,7 @@ Each person who wants to use this must set up their own copy. These steps are on
 ### Step 2: Name your project
 
 1. At the top-left, click **Untitled project**
-2. Type `Pass To Assistant`
+2. Type what you want to name your project. (example: `Pass To Assistant`)
 3. Press Enter to save
 
 ### Step 3: Delete the placeholder code
@@ -142,7 +142,8 @@ After a minute or so, try it out (see "How to Use It" below). If it doesn't work
 
 Within about a minute, the thread will be marked unread and tagged as `Processed`. When the assistant opens that label in Gmail, unread emails appear at the top.
 
-> **Tip:** You do not need to manually mark the email unread. The script does that for you.
+> [!TIP]
+> You do not need to manually mark the email unread. The script does that for you.
 
 ---
 
@@ -191,5 +192,5 @@ The label still works. It just won't clutter your sidebar or message view.
 
 ## Notes
 
-- **Each person needs their own copy.** Installable triggers in Google Apps Script run under the person who created them and cannot be shared.
+- **Each person (account) needs their own copy.** Installable triggers in Google Apps Script run under the account of person who created them and cannot be shared.
 - **Free quota limits.** Google Apps Script has daily quotas: roughly 90 minutes of execution time and 20,000 Gmail read/write operations per day. This script uses 2-3 calls per run and runs about once per minute, which is well within free limits for normal use.

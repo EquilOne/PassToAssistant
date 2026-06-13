@@ -15,6 +15,7 @@ You read an email, decide an assistant needs to see it, and apply their label. T
 The assistant just opens their label in Gmail — unread threads are at the top. No fuss.
 
 **Supports multiple assistants.** Each assistant gets their own label processed independently.
+
 > [!TIP]
 > **Not just for assistants.**
 > You can use this with any Gmail label. Set it up for a team member, a shared mailbox, a project label — anything where you want newly-labeled threads to auto-surface as unread.
@@ -65,9 +66,7 @@ Each person (account) who wants to use this must set up their own copy. These st
 The editor window shows a default function:
 
 ```javascript
-function myFunction() {
-
-}
+function myFunction() {}
 ```
 
 Select all of it and delete it so the editor is blank.
@@ -101,6 +100,8 @@ const ASSISTANT_LABELS = ["Alex Rivera Assistant", "Sam Patel Assistant"];
 
 Make sure the names match your Gmail labels **exactly** — including spaces and capitalization.
 
+Label names containing `"` or `\` are supported; the query builder escapes them automatically.
+
 ### Step 7: Save the project
 
 Click the **Save** icon (floppy disk) in the toolbar, or press Ctrl+S (Cmd+S on Mac).
@@ -117,7 +118,7 @@ A pop-up will ask for permissions:
 
 1. Click **Review permissions**
 2. Choose your Google account
-3. A warning appears: *"Google hasn't verified this app"* — this is normal because you wrote it yourself
+3. A warning appears: _"Google hasn't verified this app"_ — this is normal because you wrote it yourself
 4. Click **Advanced** (bottom-left of the warning)
 5. Click **Go to Pass To Assistant (unsafe)**
 6. Click **Allow**
@@ -149,12 +150,12 @@ Within about a minute, the thread will be marked unread and tagged as `Processed
 
 ## If Something Goes Wrong
 
-| Symptom | Likely Cause | Fix |
-|---|---|---|
-| Nothing happens after labeling an email | Label name in script doesn't match Gmail | Open the script, check `ASSISTANT_LABELS` against your actual Gmail labels — they must match exactly |
-| Script stopped running after a week | Triggers can sometimes be removed by Google | Open the project, select `setup` from the function dropdown, click Run |
-| "Label not found" warning in logs | A label in the `ASSISTANT_LABELS` array doesn't exist yet | Create the missing label in Gmail, or remove it from the array if no longer needed |
-| Can't remember if it's running | Check the Triggers panel (clock icon in Apps Script editor sidebar) | — |
+| Symptom                                 | Likely Cause                                                        | Fix                                                                                                  |
+| --------------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Nothing happens after labeling an email | Label name in script doesn't match Gmail                            | Open the script, check `ASSISTANT_LABELS` against your actual Gmail labels — they must match exactly |
+| Script stopped running after a week     | Triggers can sometimes be removed by Google                         | Open the project, select `setup` from the function dropdown, click Run                               |
+| "Label not found" warning in logs       | A label in the `ASSISTANT_LABELS` array doesn't exist yet           | Create the missing label in Gmail, or remove it from the array if no longer needed                   |
+| Can't remember if it's running          | Check the Triggers panel (clock icon in Apps Script editor sidebar) | —                                                                                                    |
 
 ---
 
@@ -162,15 +163,16 @@ Within about a minute, the thread will be marked unread and tagged as `Processed
 
 All settings are at the top of `PassToAssistant.js`. Edit them before running `setup()`.
 
-| Constant | Default | What It Does |
-|---|---|---|
-| `ASSISTANT_LABELS` | `["FirstName LastName Assistant"]` | List of assistant label names to watch |
-| `PROCESSED_LABEL` | `"Processed"` | Label added to threads once handled |
-| `SEARCH_PAGE_SIZE` | `100` | How many threads to check per search batch |
-| `NEXT_RUN_DELAY_MS` | `60000` | Milliseconds between runs (60000 = 1 minute) |
-| `RUNTIME_BUDGET_MS` | `300000` | Max ms per run before stopping (300000 = 5 minutes) |
+| Constant            | Default                            | What It Does                                        |
+| ------------------- | ---------------------------------- | --------------------------------------------------- |
+| `ASSISTANT_LABELS`  | `["FirstName LastName Assistant"]` | List of assistant label names to watch              |
+| `PROCESSED_LABEL`   | `"Processed"`                      | Label added to threads once handled                 |
+| `SEARCH_PAGE_SIZE`  | `100`                              | How many threads to check per search batch          |
+| `MAX_PAGES_PER_RUN` | `50`                               | Max search pages to process per label per run.      |
+| `NEXT_RUN_DELAY_MS` | `60000`                            | Milliseconds between runs (60000 = 1 minute)        |
+| `RUNTIME_BUDGET_MS` | `300000`                           | Max ms per run before stopping (300000 = 5 minutes) |
 
-After changing any of these, re-run the `setup()` function to apply the changes.
+After changing `ASSISTANT_LABELS` or `PROCESSED_LABEL`, re-run `setup()`. Other numeric constants take effect on the next run without re-running `setup()`.
 
 ---
 
@@ -193,4 +195,4 @@ The label still works. It just won't clutter your sidebar or message view.
 ## Notes
 
 - **Each person (account) needs their own copy.** Installable triggers in Google Apps Script run under the account of person who created them and cannot be shared.
-- **Free quota limits.** Google Apps Script has daily quotas: roughly 90 minutes of execution time and 20,000 Gmail read/write operations per day. This script uses 2-3 calls per run and runs about once per minute, which is well within free limits for normal use.
+- **Free quota limits.** Google Apps Script has daily quotas: roughly 90 minutes of execution time and 20,000 Gmail read/write operations per day. Each page costs approximately 1 search + 2 batch operations (markUnread + addLabel), so a run processing N pages makes about 3N calls. With `SEARCH_PAGE_SIZE=100`, that stays well within free limits for normal use.
